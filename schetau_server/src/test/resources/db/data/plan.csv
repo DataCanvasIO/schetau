@@ -1,0 +1,5 @@
+"plan_id","plan_name"             ,"first_run_time","run_interval","expire_time","wait_timeout","signal_definition","run_times","next_run_time"
+1        ,"One-shot, never expire",1000            ,0             ,-1           ,0             ,""                 ,0          ,1000
+2        ,"Repeat, expire"        ,2000            ,2000          ,10000        ,0             ,""                 ,0          ,2000
+3        ,"Repeat, never expire"  ,3000            ,3000          ,-1           ,0             ,""                 ,0          ,3000
+4        ,"One-shot, signaled"    ,4000            ,0             ,-1           ,2000          ,""                 ,0          ,4000

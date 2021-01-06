@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-activity
+      author: jiaoyg
+      comment: Create table schetau_activity.
+      changes:
+        - createTable:
+            tableName: schetau_activity
+            columns:
+              - column:
+                  name: seq_no
+                  type: long
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: node_id
+                  type: char(36)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_activity_node_id
+                    references: schetau_node(node_id)
+                    deleteCascade: true
+              - column:
+                  name: last_updating_time
+                  type: long
+                  constraints:
+                    nullable: false

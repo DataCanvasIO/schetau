@@ -1,0 +1,27 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-signal
+      author: jiaoyg
+      comment: Create table schetau_signal.
+      changes:
+        - createTable:
+            tableName: schetau_signal
+            columns:
+              - column:
+                  name: signal_id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: count_down
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: signature
+                  type: char(64)
+                  constraints:
+                    nullable: false
+                    unique: true

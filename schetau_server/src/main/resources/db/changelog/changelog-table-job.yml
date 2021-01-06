@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-job
+      author: jiaoyg
+      comment: Create table schetau_job.
+      changes:
+        - createTable:
+            tableName: schetau_job
+            columns:
+              - column:
+                  name: job_id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: job_name
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: clob
+              - column:
+                  name: job_type
+                  type: varchar(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: execution_info
+                  type: clob

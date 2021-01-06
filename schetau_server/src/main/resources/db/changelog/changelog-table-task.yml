@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-task
+      author: jiaoyg
+      comment: Create table schetau_task.
+      changes:
+        - createTable:
+            tableName: schetau_task
+            columns:
+              - column:
+                  name: task_id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: plan_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_plan_id
+                    references: schetau_plan(plan_id)
+                    deleteCascade: true
+              - column:
+                  name: job_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_task_job_id
+                    references: schetau_job(job_id)
+                    deleteCascade: true
+              - column:
+                  name: create_time
+                  type: long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: run_times
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wait_timeout
+                  type: long
+              - column:
+                  name: signal_id
+                  type: long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: task_status
+                  type: char(32)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: run_time
+                  type: long
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: result
+                  type: clob

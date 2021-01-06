@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-node
+      author: jiaoyg
+      comment: Create table schetau_node.
+      changes:
+        - createTable:
+            tableName: schetau_node
+            columns:
+              - column:
+                  name: node_id
+                  type: char(36)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: host_address
+                  type: char(15)
+              - column:
+                  name: host_name
+                  type: varchar(64)

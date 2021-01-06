@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="schetau_server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="curator-scheduler-runner" target="1.8" />
+      <module name="scheduler-core" target="1.8" />
+      <module name="scheduler-parent" target="1.8" />
+      <module name="schetau" target="1.8" />
+      <module name="schetau_server" target="1.8" />
+      <module name="simple-scheduler-runner" target="1.8" />
+      <module name="timer-scheduler-runner" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

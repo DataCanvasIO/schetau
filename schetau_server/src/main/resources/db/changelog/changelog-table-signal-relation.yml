@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-signal-relation
+      author: jiaoyg
+      comment: Create table schetau_signal_relation.
+      changes:
+        - createTable:
+            tableName: schetau_signal_relation
+            columns:
+              - column:
+                  name: parent_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_signal_relation_parent_id
+                    references: schetau_signal(signal_id)
+                    deleteCascade: true
+              - column:
+                  name: child_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_signal_relation_child_id
+                    references: schetau_signal(signal_id)
+                    deleteCascade: true

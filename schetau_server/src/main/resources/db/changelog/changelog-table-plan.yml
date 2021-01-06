@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-job
+      author: jiaoyg
+      comment: Create table schetau_plan.
+      changes:
+        - createTable:
+            tableName: schetau_plan
+            columns:
+              - column:
+                  name: plan_id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: plan_name
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_run_time
+                  type: long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: run_interval
+                  type: long
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expire_time
+                  type: long
+                  defaultValue: -1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: wait_timeout
+                  type: long
+              - column:
+                  name: signal_definition
+                  type: clob
+              - column:
+                  name: run_times
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: next_run_time
+                  type: long
+                  constraints:
+                    nullable: false

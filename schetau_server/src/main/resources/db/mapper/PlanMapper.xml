@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright 2020 DataCanvas
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.github.datacanvasio.schetau.db.mapper.PlanMapper">
+    <sql id="table">schetau_plan</sql>
+    <sql id="plan_job">schetau_plan_job</sql>
+    <sql id="job">schetau_job</sql>
+
+    <resultMap id="planWithJobs" type="Plan" autoMapping="true">
+        <id property="planId" column="plan_id"/>
+        <collection property="jobs" ofType="Job" autoMapping="true">
+            <id property="jobId" column="job_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByNextRunTimeBeforeWithJobs" parameterType="long" resultMap="planWithJobs">
+        select * from
+        <include refid="table"/>
+        p left join
+        <include refid="plan_job"/>
+        pj on p.plan_id = pj.plan_id left join
+        <include refid="job"/>
+        j on pj.job_id = j.job_id
+        <where>
+            next_run_time &lt;&gt; -1
+            and next_run_time &lt;= #{time}
+            and (expire_time &gt;= #{time} or expire_time = -1)
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="Plan" useGeneratedKeys="true" keyProperty="planId">
+        insert into
+        <include refid="table"/>
+        (
+        <trim suffixOverrides=",">
+            plan_name,
+            first_run_time,
+            <if test="model.runInterval != null">run_interval,</if>
+            <if test="model.expireTime != null">expire_time,</if>
+            <if test="model.waitTimeout != null">wait_timeout,</if>
+            <if test="model.signalDefinition != null">signal_definition,</if>
+            next_run_time,
+        </trim>
+        ) values (
+        <trim suffixOverrides=",">
+            #{model.planName},
+            #{model.firstRunTime},
+            <if test="model.runInterval != null">#{model.runInterval},</if>
+            <if test="model.expireTime != null">#{model.expireTime},</if>
+            <if test="model.waitTimeout != null">#{model.waitTimeout},</if>
+            <if test="model.signalDefinition != null">#{model.signalDefinition},</if>
+            #{model.firstRunTime},
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="Plan">
+        update
+        <include refid="table"/>
+        <set>
+            <if test="model.runTimes != null">run_times = #{model.runTimes},</if>
+            <if test="model.nextRunTime != null">next_run_time = #{model.nextRunTime},</if>
+            <if test="model.expireTime != null">expire_time = #{model.expireTime},</if>
+        </set>
+        <where>
+            plan_id = #{model.planId}
+        </where>
+    </update>
+</mapper>

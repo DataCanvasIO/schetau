@@ -1,0 +1,7 @@
+"signal_id","signature"              ,"count_down"
+1          ,"TASK_FIN_0001_0001_0001",0
+2          ,"TASK_FIN_0002_0001_0001",1
+3          ,"TASK_FIN_0002_0002_0001",1
+4          ,"TASK_FIN_0002_0002_0002",1
+5          ,"ALL_OF_1_2_3"           ,2
+6          ,"ANY_OF_3_4"             ,1

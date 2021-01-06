@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-table-job
+      author: jiaoyg
+      comment: Create table schetau_plan_job.
+      changes:
+        - createTable:
+            tableName: schetau_plan_job
+            columns:
+              - column:
+                  name: plan_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_plan_job_plan_id
+                    references: schetau_plan(plan_id)
+                    deleteCascade: true
+              - column:
+                  name: job_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_plan_job_job_id
+                    references: schetau_job(job_id)
+                    deleteCascade: true

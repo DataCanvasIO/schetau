@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changelog-table-node.yml
+  - include:
+      file: db/changelog/changelog-table-activity.yml
+  - include:
+      file: db/changelog/changelog-table-job.yml
+  - include:
+      file: db/changelog/changelog-table-plan.yml
+  - include:
+      file: db/changelog/changelog-table-plan-job.yml
+  - include:
+      file: db/changelog/changelog-table-signal.yml
+  - include:
+      file: db/changelog/changelog-table-signal-relation.yml
+  - include:
+      file: db/changelog/changelog-table-task.yml
