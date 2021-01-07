@@ -150,7 +150,7 @@ public class SignalServiceImpl implements SignalService {
                 return signal.getId();
             }
         } catch (ExpretauParseException | ExpretauCompileException | FailGetEvaluator e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return null;
     }

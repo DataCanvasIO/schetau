@@ -22,10 +22,13 @@ import io.github.datacanvasio.schetau.service.JobService;
 import io.github.datacanvasio.schetau.service.PlanService;
 import io.github.datacanvasio.schetau.service.RunService;
 import io.github.datacanvasio.schetau.service.SchetauService;
+import io.github.datacanvasio.schetau.service.SignalService;
 import io.github.datacanvasio.schetau.service.dto.JobDto;
 import io.github.datacanvasio.schetau.service.dto.PlanDto;
 import io.github.datacanvasio.schetau.service.dto.TaskDto;
 import io.github.datacanvasio.schetau.service.impl.SchetauServiceImpl;
+import io.github.datacanvasio.schetau.signal.CustomSignalFun;
+import io.github.datacanvasio.schetau.signal.SignalFun;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -57,6 +60,8 @@ public class ScheduleIT {
     private JobService jobService;
     @Autowired
     private RunService runService;
+    @Autowired
+    private SignalService signalService;
 
     @Autowired
     private PlanJobMapper planJobMapper;
@@ -81,7 +86,7 @@ public class ScheduleIT {
         job.setExecutionInfo("single shot");
         job = jobService.create(job);
         planJobMapper.insert(plan.getId(), job.getId());
-        for (long time = 0; time < 10000L; time++) {
+        for (long time = 0; time < 10000L; time += 1000L) {
             schetauService.schedule(time);
         }
         List<TaskDto> tasks = history.getTasks();
@@ -103,7 +108,7 @@ public class ScheduleIT {
         job.setExecutionInfo("repeatedly");
         job = jobService.create(job);
         planJobMapper.insert(plan.getId(), job.getId());
-        for (long time = 0; time < 10000L; time++) {
+        for (long time = 0; time < 10000L; time += 1000L) {
             schetauService.schedule(time);
         }
         List<TaskDto> tasks = history.getTasks();
@@ -111,6 +116,31 @@ public class ScheduleIT {
         assertThat(tasks.get(0).getRunTime()).isEqualTo(3000L);
         assertThat(tasks.get(1).getRunTime()).isEqualTo(5000L);
         assertThat(tasks.get(2).getRunTime()).isEqualTo(7000L);
+    }
+
+    @Test
+    public void testSingleShotSignaled() {
+        SignalFun.register();
+        PlanDto plan = new PlanDto();
+        plan.setName("SingleShotSignaled");
+        plan.setFirstRunTime(3000L);
+        plan.setSignalDefinition("Custom('single-shot', 'signaled')");
+        plan = planService.create(plan);
+        JobDto job = new JobDto();
+        job.setName("history");
+        job.setType("Test");
+        job.setExecutionInfo("single shot, signaled");
+        job = jobService.create(job);
+        planJobMapper.insert(plan.getId(), job.getId());
+        for (long time = 0; time < 10000L; time += 1000L) {
+            if (time == 5000L) {
+                signalService.emit(CustomSignalFun.signature("single-shot", "signaled"));
+            }
+            schetauService.schedule(time);
+        }
+        List<TaskDto> tasks = history.getTasks();
+        assertThat(tasks.size()).isEqualTo(1);
+        assertThat(tasks.get(0).getRunTime()).isEqualTo(5000L);
     }
 
     @Configuration

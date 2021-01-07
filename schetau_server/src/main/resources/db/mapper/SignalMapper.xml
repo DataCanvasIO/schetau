@@ -47,13 +47,13 @@
         <include refid="table"/>
         (
         <trim suffixOverrides=",">
-            <if test="model.countDown != null">count_down,</if>
             signature,
+            count_down,
         </trim>
         ) values (
         <trim suffixOverrides=",">
-            <if test="model.countDown != null">#{model.countDown},</if>
             #{model.signature},
+            #{model.countDown},
         </trim>
         )
     </insert>
@@ -62,7 +62,7 @@
         update
         <include refid="table"/>
         <set>
-            <if test="model.countDown != null">count_down = #{model.countDown},</if>
+            count_down = #{model.countDown},
         </set>
         <where>
             signal_id = #{model.signalId}

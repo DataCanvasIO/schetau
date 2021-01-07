@@ -16,29 +16,31 @@
 
 package io.github.datacanvasio.schetau.signal;
 
-import io.github.datacanvasio.expretau.op.FunFactory;
 import io.github.datacanvasio.expretau.runtime.RtExpr;
-import io.github.datacanvasio.expretau.runtime.TypeCode;
-import io.github.datacanvasio.expretau.runtime.op.RtFun;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 
-public abstract class SignalFun extends RtFun {
-    private static final long serialVersionUID = -579372051213990169L;
+public final class CustomSignalFun extends SignalFun {
+    private static final long serialVersionUID = -4557438858665746863L;
 
-    protected SignalFun(@Nonnull RtExpr[] paras) {
+    protected CustomSignalFun(@Nonnull RtExpr[] paras) {
         super(paras);
     }
 
-    public static void register() {
-        FunFactory.INS.registerUdf("AllOf", AllOfSignalFun::new);
-        FunFactory.INS.registerUdf("AnyOf", AnyOfSignalFun::new);
-        FunFactory.INS.registerUdf("TaskFinished", TaskFinishedSignalFun::new);
-        FunFactory.INS.registerUdf("Custom", CustomSignalFun::new);
+    @Nonnull
+    public static String signature(@Nonnull Object... values) {
+        return "CUSTOM_" + Arrays.stream(values)
+            .map(Object::toString)
+            .collect(Collectors.joining("_"));
     }
 
+    @Nonnull
     @Override
-    public int typeCode() {
-        return TypeCode.OBJECT;
+    protected Object fun(@Nonnull Object[] values) {
+        SignalTreeNode node = new SignalTreeNode();
+        node.setSignature(signature(values));
+        return node;
     }
 }
