@@ -21,13 +21,14 @@ spring:
       enabled: false
   liquibase:
     enabled: false
-    change-log: 'classpath:/db/changelog/changelog-master.yml'
+  thymeleaf:
+    enabled: false
 mybatis:
   config-location: 'classpath:/db/mybatis-config.xml'
 springdoc:
   packagesToScan: 'io.github.datacanvasio.schetau.controller'
   swagger-ui:
-    enabled: true
+    enabled: false
 schetau:
   scheduling:
     delay:

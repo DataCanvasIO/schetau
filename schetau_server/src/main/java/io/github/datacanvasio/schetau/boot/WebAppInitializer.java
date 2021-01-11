@@ -28,9 +28,15 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication(scanBasePackageClasses = {
-    SchetauServiceImpl.class
-})
+@SpringBootApplication(
+    scanBasePackages = {
+        "io.github.datacanvasio.schetau.frontend",
+    },
+    // Cannot use `HomeController.class` here, for it is in a war.
+    scanBasePackageClasses = {
+        SchetauServiceImpl.class,
+    }
+)
 @EnableScheduling
 @EnableTransactionManagement
 @MapperScans({@MapperScan(basePackageClasses = {TaskMapper.class})})

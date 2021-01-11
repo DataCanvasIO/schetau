@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="schetau_server" />
+        <module name="schetau_frontend" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -15,6 +16,7 @@
       <module name="scheduler-core" target="1.8" />
       <module name="scheduler-parent" target="1.8" />
       <module name="schetau" target="1.8" />
+      <module name="schetau_frontend" target="1.8" />
       <module name="schetau_server" target="1.8" />
       <module name="simple-scheduler-runner" target="1.8" />
       <module name="timer-scheduler-runner" target="1.8" />

@@ -2,7 +2,7 @@
 
 ![Build with Maven](https://github.com/DataCanvasIO/schetau/workflows/Build%20with%20Maven/badge.svg)
 
-ScheTau is a scheduler build on top of storages.
+ScheTau is a scheduler built on top of storages.
 
 ## Debug
 
