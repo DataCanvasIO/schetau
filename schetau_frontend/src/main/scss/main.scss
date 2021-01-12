@@ -1,32 +1,43 @@
-$zIndex     : 1100;
+/*
+ * Copyright 2020 DataCanvas
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+$zIndex: 1000;
 $drawerWidth: 200px;
 
-.panel {
-    display: flex;
+.bar {
+    z-index: $zIndex !important;
 }
 
 .drawer {
-    z-index    : $zIndex - 100;
+    z-index: $zIndex - 100 !important;
     flex-shrink: 0;
-    width      : $drawerWidth;
-}
-
-.drawer-paper {
     width: $drawerWidth;
 }
 
-.asset {
-    flex-grow: 1;
-}
-
-.nested-list {
-    padding: {
-        left: 10px !important;
-    }
+.drawer-paper {
+    z-index: $zIndex - 100 !important;
+    width: $drawerWidth;
 }
 
 .selected {
     background: {
         color: yellow !important;
     }
+}
+
+.panel {
+    display: flex;
 }
