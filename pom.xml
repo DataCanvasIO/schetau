@@ -83,6 +83,9 @@
         <!-- jackson -->
         <jackson.version>2.11.2</jackson.version>
 
+        <!-- json schema -->
+        <jsonschema.version>4.16.0</jsonschema.version>
+
         <!-- apache commons -->
         <commons-io.version>2.8.0</commons-io.version>
 
@@ -205,6 +208,13 @@
                 <version>${jackson.version}</version>
             </dependency>
 
+            <!-- json schema -->
+            <dependency>
+                <groupId>com.github.victools</groupId>
+                <artifactId>jsonschema-generator</artifactId>
+                <version>${jsonschema.version}</version>
+            </dependency>
+
             <!-- apache commons -->
             <dependency>
                 <groupId>commons-io</groupId>
@@ -306,6 +316,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-checkstyle-plugin</artifactId>
                     <version>${maven-checkstyle.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.victools</groupId>
+                    <artifactId>jsonschema-maven-plugin</artifactId>
+                    <version>${jsonschema.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.controller.request.mapper;
+package io.github.datacanvasio.schetau.controller.mapper;
 
 import io.github.datacanvasio.schetau.controller.request.JobRequest;
 import io.github.datacanvasio.schetau.service.dto.JobDto;

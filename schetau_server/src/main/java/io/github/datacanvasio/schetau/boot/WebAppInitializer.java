@@ -16,6 +16,8 @@
 
 package io.github.datacanvasio.schetau.boot;
 
+import io.github.datacanvasio.schetau.config.WebMvcConfig;
+import io.github.datacanvasio.schetau.controller.NodeController;
 import io.github.datacanvasio.schetau.db.mapper.TaskMapper;
 import io.github.datacanvasio.schetau.service.impl.SchetauServiceImpl;
 import io.github.datacanvasio.schetau.signal.SignalFun;
@@ -34,6 +36,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     },
     // Cannot use `HomeController.class` here, for it is in a war.
     scanBasePackageClasses = {
+        WebMvcConfig.class,
+        NodeController.class,
         SchetauServiceImpl.class,
     }
 )

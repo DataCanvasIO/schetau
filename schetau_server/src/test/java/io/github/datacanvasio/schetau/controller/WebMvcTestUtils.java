@@ -16,7 +16,7 @@
 
 package io.github.datacanvasio.schetau.controller;
 
-import io.github.datacanvasio.schetau.controller.response.SchetauResponse;
+import io.github.datacanvasio.schetau.controller.advise.SchetauResponse;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultMatcher;
 

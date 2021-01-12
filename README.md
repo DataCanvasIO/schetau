@@ -4,7 +4,13 @@
 
 ScheTau is a scheduler built on top of storages.
 
-## Debug
+## Facilities
+
+### Spring doc UI
+
+```
+GET /swagger-ui.html
+```
 
 ### H2 console
 

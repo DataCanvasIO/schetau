@@ -17,7 +17,6 @@
 package io.github.datacanvasio.schetau.controller.advise;
 
 import io.github.datacanvasio.schetau.controller.NodeController;
-import io.github.datacanvasio.schetau.controller.response.SchetauResponse;
 import io.github.datacanvasio.schetau.exception.SchetauException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;

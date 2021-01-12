@@ -24,9 +24,10 @@ spring:
 mybatis:
   config-location: 'classpath:/db/mybatis-config.xml'
 springdoc:
-  packagesToScan: 'io.github.datacanvasio.schetau.controller'
+  api-docs:
+    enabled: false
   swagger-ui:
-    enabled: true
+    enabled: false
 schetau:
   scheduling:
     delay:

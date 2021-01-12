@@ -16,10 +16,10 @@
 
 package io.github.datacanvasio.schetau.controller;
 
+import io.github.datacanvasio.schetau.controller.mapper.JobRequestMapper;
+import io.github.datacanvasio.schetau.controller.mapper.JobResponseMapper;
 import io.github.datacanvasio.schetau.controller.request.JobRequest;
-import io.github.datacanvasio.schetau.controller.request.mapper.JobRequestMapper;
 import io.github.datacanvasio.schetau.controller.response.JobResponse;
-import io.github.datacanvasio.schetau.controller.response.mapper.JobResponseMapper;
 import io.github.datacanvasio.schetau.service.JobService;
 import io.github.datacanvasio.schetau.service.dto.JobDto;
 import io.swagger.v3.oas.annotations.Operation;

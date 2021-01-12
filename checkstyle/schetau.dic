@@ -11,3 +11,4 @@ defs
 csvread
 springdoc
 configurer
+jsonschema

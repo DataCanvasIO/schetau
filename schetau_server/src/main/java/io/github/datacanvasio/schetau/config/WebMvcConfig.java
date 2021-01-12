@@ -24,6 +24,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.method.HandlerTypePredicate;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.annotation.Nonnull;
@@ -46,5 +47,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addFormatters(@Nonnull FormatterRegistry registry) {
         // Convert string to enum ignoring case
         ApplicationConversionService.configure(registry);
+    }
+
+    @Override
+    public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
+        registry
+            .addResourceHandler("/api/profiles/**")
+            .addResourceLocations("classpath:/schema/");
     }
 }

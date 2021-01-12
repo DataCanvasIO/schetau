@@ -38,6 +38,7 @@ springdoc:
   packagesToScan: 'io.github.datacanvasio.schetau.controller'
   swagger-ui:
     enabled: true
+    path: '/swagger-ui.html'
 schetau:
   scheduling:
     delay:

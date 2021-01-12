@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.controller.response;
+package io.github.datacanvasio.schetau.controller.advise;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.ToString;

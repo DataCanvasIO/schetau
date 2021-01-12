@@ -16,8 +16,8 @@
 
 package io.github.datacanvasio.schetau.controller;
 
+import io.github.datacanvasio.schetau.controller.mapper.NodeResponseMapper;
 import io.github.datacanvasio.schetau.controller.response.NodeResponse;
-import io.github.datacanvasio.schetau.controller.response.mapper.NodeResponseMapper;
 import io.github.datacanvasio.schetau.service.NodeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
