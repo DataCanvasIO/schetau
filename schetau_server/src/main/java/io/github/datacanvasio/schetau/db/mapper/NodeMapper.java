@@ -20,7 +20,11 @@ import io.github.datacanvasio.schetau.db.model.Node;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface NodeMapper {
+    List<Node> findAll();
+
     int insert(@Param("model") Node model);
 }

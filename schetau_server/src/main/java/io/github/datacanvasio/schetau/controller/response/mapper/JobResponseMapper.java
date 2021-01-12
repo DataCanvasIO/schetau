@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.db.mapper;
+package io.github.datacanvasio.schetau.controller.response.mapper;
 
-import io.github.datacanvasio.schetau.db.model.Job;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import io.github.datacanvasio.schetau.controller.response.JobResponse;
+import io.github.datacanvasio.schetau.service.dto.JobDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper
-public interface JobMapper {
-    List<Job> findAll();
+public interface JobResponseMapper {
+    JobResponseMapper MAPPER = Mappers.getMapper(JobResponseMapper.class);
 
-    Job findById(@Param("id") long id);
+    JobResponse fromJob(JobDto job);
 
-    int insert(@Param("model") Job model);
+    List<JobResponse> fromJobs(List<JobDto> jobs);
 }

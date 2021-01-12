@@ -54,6 +54,15 @@ public class JobMapperTest {
     }
 
     @Test
+    public void testFindAll() {
+        List<Job> models = jobMapper.findAll();
+        assertThat(models.size()).isEqualTo(2);
+        assertThat(models)
+            .contains(modelList.get(0))
+            .contains(modelList.get(1));
+    }
+
+    @Test
     public void testFindById() {
         Job model = jobMapper.findById(2L);
         assertThat(model).isEqualTo(modelList.get(1));

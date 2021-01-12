@@ -22,6 +22,11 @@
 <mapper namespace="io.github.datacanvasio.schetau.db.mapper.NodeMapper">
     <sql id="table">schetau_node</sql>
 
+    <select id="findAll" resultType="Node">
+        select * from
+        <include refid="table"/>
+    </select>
+
     <insert id="insert" parameterType="Node" useGeneratedKeys="false" keyProperty="nodeId">
         insert into
         <include refid="table"/>

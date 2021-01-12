@@ -18,8 +18,12 @@ package io.github.datacanvasio.schetau.service;
 
 import io.github.datacanvasio.schetau.service.dto.JobDto;
 
+import java.util.List;
+
 public interface JobService {
     JobDto create(JobDto job);
 
     JobDto getById(Long id);
+
+    List<JobDto> listAll();
 }

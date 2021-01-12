@@ -30,6 +30,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -67,6 +70,23 @@ public class NodeServiceImplTest {
     public void testSave() {
         nodeService.save();
         verify(nodeMapper, times(1)).insert(any(Node.class));
+        verifyNoMoreInteractions(nodeMapper);
+    }
+
+    @Test
+    public void testListAll() {
+        Node model = new Node();
+        model.setNodeId("4E415788-033F-47A2-A4B2-23709EE36DA6");
+        model.setHostAddress("127.0.0.1");
+        model.setHostName("localhost");
+        when(nodeMapper.findAll()).thenReturn(Collections.singletonList(model));
+        List<NodeDto> nodes = nodeService.listAll();
+        assertThat(nodes.size()).isEqualTo(1);
+        assertThat(nodes.get(0))
+            .hasFieldOrPropertyWithValue("id", "4E415788-033F-47A2-A4B2-23709EE36DA6")
+            .hasFieldOrPropertyWithValue("hostAddress", "127.0.0.1")
+            .hasFieldOrPropertyWithValue("hostName", "localhost");
+        verify(nodeMapper, times(1)).findAll();
         verifyNoMoreInteractions(nodeMapper);
     }
 }

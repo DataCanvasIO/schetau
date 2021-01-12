@@ -29,6 +29,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
@@ -80,14 +83,35 @@ public class JobServiceImplTest {
         model.setJobType("CmdLine");
         model.setExecutionInfo("ls -l");
         when(jobMapper.findById(1L)).thenReturn(model);
-        JobDto jobDef = jobService.getById(1L);
-        assertThat(jobDef)
+        JobDto job = jobService.getById(1L);
+        assertThat(job)
             .hasFieldOrPropertyWithValue("id", 1L)
             .hasFieldOrPropertyWithValue("name", "test")
             .hasFieldOrPropertyWithValue("description", "A job for test.")
             .hasFieldOrPropertyWithValue("type", "CmdLine")
             .hasFieldOrPropertyWithValue("executionInfo", "ls -l");
         verify(jobMapper, times(1)).findById(1L);
+        verifyNoMoreInteractions(jobMapper);
+    }
+
+    @Test
+    public void testListAll() {
+        Job model = new Job();
+        model.setJobId(2L);
+        model.setJobName("test");
+        model.setDescription("A job for test.");
+        model.setJobType("CmdLine");
+        model.setExecutionInfo("ls -l");
+        when(jobMapper.findAll()).thenReturn(Collections.singletonList(model));
+        List<JobDto> jobs = jobService.listAll();
+        assertThat(jobs.size()).isEqualTo(1);
+        assertThat(jobs.get(0))
+            .hasFieldOrPropertyWithValue("id", 2L)
+            .hasFieldOrPropertyWithValue("name", "test")
+            .hasFieldOrPropertyWithValue("description", "A job for test.")
+            .hasFieldOrPropertyWithValue("type", "CmdLine")
+            .hasFieldOrPropertyWithValue("executionInfo", "ls -l");
+        verify(jobMapper, times(1)).findAll();
         verifyNoMoreInteractions(jobMapper);
     }
 }

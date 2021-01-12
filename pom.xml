@@ -69,6 +69,9 @@
         <!-- spring boot -->
         <spring-boot.version>2.4.1</spring-boot.version>
 
+        <!-- springdoc openapi -->
+        <springdoc-openapi.version>1.5.2</springdoc-openapi.version>
+
         <!-- mybatis -->
         <mybatis.version>3.5.6</mybatis.version>
         <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
@@ -101,6 +104,7 @@
         <!-- testing -->
         <junit5.version>5.7.0</junit5.version>
         <assertj.version>3.18.1</assertj.version>
+        <hamcrest.version>2.2</hamcrest.version>
 
         <!-- plugins -->
         <maven-checkstyle.version>3.1.1</maven-checkstyle.version>
@@ -146,6 +150,13 @@
                         <artifactId>hamcrest</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- springdoc openapi -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
             </dependency>
 
             <!-- mybatis -->
@@ -259,6 +270,12 @@
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+            </dependency>
+            <!-- used in WebMvcTest -->
+            <dependency>
+                <groupId>org.hamcrest</groupId>
+                <artifactId>hamcrest-core</artifactId>
+                <version>${hamcrest.version}</version>
             </dependency>
 
             <!-- this project -->

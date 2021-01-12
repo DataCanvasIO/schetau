@@ -24,6 +24,8 @@ import io.github.datacanvasio.schetau.service.mapper.JobDtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobServiceImpl implements JobService {
     @Autowired
@@ -39,5 +41,10 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobDto getById(Long id) {
         return JobDtoMapper.MAPPER.fromModel(jobMapper.findById(id));
+    }
+
+    @Override
+    public List<JobDto> listAll() {
+        return JobDtoMapper.MAPPER.formModels(jobMapper.findAll());
     }
 }

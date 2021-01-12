@@ -23,6 +23,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface NodeDtoMapper {
     NodeDtoMapper MAPPER = Mappers.getMapper(NodeDtoMapper.class);
@@ -36,4 +38,6 @@ public interface NodeDtoMapper {
         @Mapping(target = "id", source = "nodeId"),
     })
     NodeDto fromModel(Node model);
+
+    List<NodeDto> fromModels(List<Node> model);
 }

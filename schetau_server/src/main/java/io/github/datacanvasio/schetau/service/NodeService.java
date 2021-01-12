@@ -18,9 +18,12 @@ package io.github.datacanvasio.schetau.service;
 
 import io.github.datacanvasio.schetau.service.dto.NodeDto;
 
+import java.util.List;
+
 public interface NodeService {
     NodeDto me();
 
-    @SuppressWarnings("UnusedReturnValue")
     void save();
+
+    List<NodeDto> listAll();
 }

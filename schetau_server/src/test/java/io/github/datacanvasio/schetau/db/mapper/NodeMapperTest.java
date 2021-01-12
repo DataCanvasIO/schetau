@@ -17,6 +17,7 @@
 package io.github.datacanvasio.schetau.db.mapper;
 
 import io.github.datacanvasio.schetau.db.model.Node;
+import io.github.datacanvasio.schetau.util.DataUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -29,6 +30,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,11 +41,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class NodeMapperTest {
+    private static List<Node> modelList;
+
     @Autowired
     private NodeMapper nodeMapper;
 
     @BeforeAll
-    public static void setupAll() {
+    public static void setupAll() throws IOException {
+        modelList = DataUtil.readCsv(
+            NodeMapperTest.class.getResourceAsStream("/db/data/node.csv"),
+            Node.class
+        );
+    }
+
+    @Test
+    public void testFindAll() {
+        List<Node> models = nodeMapper.findAll();
+        assertThat(models.size()).isEqualTo(3);
+        assertThat(models)
+            .contains(modelList.get(0))
+            .contains(modelList.get(1))
+            .contains(modelList.get(2));
     }
 
     @Test

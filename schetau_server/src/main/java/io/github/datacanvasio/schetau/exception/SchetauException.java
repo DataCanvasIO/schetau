@@ -14,19 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.db.mapper;
+package io.github.datacanvasio.schetau.exception;
 
-import io.github.datacanvasio.schetau.db.model.Job;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-import java.util.List;
+@RequiredArgsConstructor
+public class SchetauException extends RuntimeException {
+    private static final long serialVersionUID = -3863930369363610135L;
 
-@Mapper
-public interface JobMapper {
-    List<Job> findAll();
-
-    Job findById(@Param("id") long id);
-
-    int insert(@Param("model") Job model);
+    @Getter
+    private final String errorCode;
+    @Getter
+    private final Object[] args;
 }

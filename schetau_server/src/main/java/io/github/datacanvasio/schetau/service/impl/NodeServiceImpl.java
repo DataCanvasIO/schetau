@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import javax.annotation.PostConstruct;
 
 @Slf4j
@@ -49,5 +50,10 @@ public class NodeServiceImpl implements NodeService {
     @Override
     public void save() {
         nodeMapper.insert(NodeDtoMapper.MAPPER.toModel(me));
+    }
+
+    @Override
+    public List<NodeDto> listAll() {
+        return NodeDtoMapper.MAPPER.fromModels(nodeMapper.findAll());
     }
 }

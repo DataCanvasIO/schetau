@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.db.mapper;
+package io.github.datacanvasio.schetau.controller.request;
 
-import io.github.datacanvasio.schetau.db.model.Job;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
-import java.util.List;
-
-@Mapper
-public interface JobMapper {
-    List<Job> findAll();
-
-    Job findById(@Param("id") long id);
-
-    int insert(@Param("model") Job model);
+@Data
+public class JobRequest {
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("description")
+    private String description;
+    @JsonProperty("type")
+    private String type;
+    @JsonProperty("execution_info")
+    private String executionInfo;
 }

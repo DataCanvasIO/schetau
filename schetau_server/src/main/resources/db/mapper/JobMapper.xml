@@ -22,6 +22,11 @@
 <mapper namespace="io.github.datacanvasio.schetau.db.mapper.JobMapper">
     <sql id="table">schetau_job</sql>
 
+    <select id="findAll" resultType="Job">
+        select * from
+        <include refid="table"/>
+    </select>
+
     <select id="findById" parameterType="long" resultType="Job">
         select * from
         <include refid="table"/>

@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.db.mapper;
+package io.github.datacanvasio.schetau.config;
 
-import io.github.datacanvasio.schetau.db.model.Job;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
-@Mapper
-public interface JobMapper {
-    List<Job> findAll();
-
-    Job findById(@Param("id") long id);
-
-    int insert(@Param("model") Job model);
+@Configuration
+@OpenAPIDefinition(
+    info = @Info(
+        title = "ScheTau Server API",
+        description = "This is ScheTau Server API using springdoc-openapi and OpenAPI 3."
+    )
+)
+public class OpenApiConfig {
 }
