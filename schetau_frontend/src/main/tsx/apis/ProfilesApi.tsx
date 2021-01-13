@@ -20,7 +20,7 @@ import { API_URL_BASE } from "./Api";
 import { ResponseHandler } from "./Api";
 
 export class ProfilesApi {
-    public static get(name: string, callback: ResponseHandler): void {
+    public static get(name: string, callback?: ResponseHandler): void {
         request
             .get(API_URL_BASE + '/profiles/' + name + '.json')
             .send()

@@ -14,21 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.controller.response;
+import * as request from "superagent";
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import { API_URL_BASE } from "./Api";
+import { ResponseHandler } from "./Api";
 
-@Data
-public class JobResponse {
-    @JsonProperty("id")
-    private Long id;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("description")
-    private String description;
-    @JsonProperty("type")
-    private String type;
-    @JsonProperty("execution_info")
-    private String executionInfo;
+export class PlansApi {
+    public static listAll(callback?: ResponseHandler): void {
+        request
+            .get(API_URL_BASE + '/plans')
+            .send()
+            .end(callback);
+    }
 }

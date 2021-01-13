@@ -31,7 +31,7 @@
         select * from
         <include refid="table"/>
         <where>
-            job_id = #{id}
+            job_id = #{jobId}
         </where>
     </select>
 
@@ -54,4 +54,26 @@
         </trim>
         )
     </insert>
+
+    <update id="update" parameterType="Job">
+        update
+        <include refid="table"/>
+        <set>
+            <if test="model.jobName != null">job_name = #{model.jobName},</if>
+            <if test="model.description != null">description = #{model.description},</if>
+            <if test="model.jobType !=null">job_type = #{model.jobType},</if>
+            <if test="model.executionInfo != null">execution_info = #{model.executionInfo},</if>
+        </set>
+        <where>
+            job_id = #{model.jobId}
+        </where>
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+        delete from
+        <include refid="table"/>
+        <where>
+            job_id = #{jobId}
+        </where>
+    </delete>
 </mapper>

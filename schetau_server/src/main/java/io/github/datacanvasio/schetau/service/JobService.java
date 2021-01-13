@@ -26,4 +26,8 @@ public interface JobService {
     JobDto getById(Long id);
 
     List<JobDto> listAll();
+
+    void update(JobDto job);
+
+    void delete(Long id);
 }

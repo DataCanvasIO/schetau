@@ -47,4 +47,14 @@ public class JobServiceImpl implements JobService {
     public List<JobDto> listAll() {
         return JobDtoMapper.MAPPER.formModels(jobMapper.findAll());
     }
+
+    @Override
+    public void update(JobDto job) {
+        jobMapper.update(JobDtoMapper.MAPPER.toModel(job));
+    }
+
+    @Override
+    public void delete(Long id) {
+        jobMapper.deleteById(id);
+    }
 }

@@ -38,12 +38,15 @@ import java.util.Collections;
 
 import static io.github.datacanvasio.schetau.controller.WebMvcTestUtils.success;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -104,6 +107,37 @@ public class JobControllerTest {
             .andExpect(jsonPath("$.data.type").value("CmdLine"))
             .andExpect(jsonPath("$.data.description").value("for test"));
         verify(jobService, times(1)).create(any(JobDto.class));
+        verifyNoMoreInteractions(jobService);
+    }
+
+    @Test
+    public void testUpdate() throws Exception {
+        mvc.perform(
+            put("/api/jobs/2")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{"
+                    + "\"description\": \"for test\""
+                    + "}")
+        )
+            .andDo(print())
+            .andExpect(success());
+        verify(jobService, times(1)).update(argThat(arg ->
+            arg.getId() == 2L
+                && arg.getDescription().equals("for test")
+        ));
+        verifyNoMoreInteractions(jobService);
+    }
+
+    @Test
+    public void testDelete() throws Exception {
+        mvc.perform(
+            delete("/api/jobs/3")
+                .accept(MediaType.APPLICATION_JSON)
+        )
+            .andDo(print())
+            .andExpect(success());
+        verify(jobService, times(1)).delete(3L);
         verifyNoMoreInteractions(jobService);
     }
 

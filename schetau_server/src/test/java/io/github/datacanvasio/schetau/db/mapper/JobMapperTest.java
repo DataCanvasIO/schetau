@@ -79,6 +79,21 @@ public class JobMapperTest {
         assertThat(model.getJobId()).isNotNull();
     }
 
+    @Test
+    public void testUpdate() {
+        Job model = new Job();
+        model.setJobId(2L);
+        model.setJobName("testUpdate");
+        int n = jobMapper.update(model);
+        assertThat(n).isEqualTo(1);
+    }
+
+    @Test
+    public void testDeleteById() {
+        int n = jobMapper.deleteById(1L);
+        assertThat(n).isEqualTo(1);
+    }
+
     @Configuration
     @EnableAutoConfiguration
     @MapperScans({@MapperScan(basePackageClasses = {TaskMapper.class})})

@@ -30,6 +30,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 import { NodesManagement } from "./nodes/NodesManagement";
+import { JobsManagement } from "./jobs/JobsManagement";
+import { PlansManagement } from "./plans/PlansManagement";
 
 enum Management {
     ManageNodes,
@@ -76,7 +78,9 @@ export class MainFrame extends React.Component<MainFrameProps, MainFrameState> {
             case Management.ManageNodes:
                 return <NodesManagement />
             case Management.ManageJobs:
+                return <JobsManagement />
             case Management.ManagePlans:
+                return <PlansManagement />
             default:
                 break;
         }

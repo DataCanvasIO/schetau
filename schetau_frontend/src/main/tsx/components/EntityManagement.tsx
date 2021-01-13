@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.controller.response;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
-@Data
-public class JobResponse {
-    @JsonProperty("id")
-    private Long id;
-    @JsonProperty("name")
-    private String name;
-    @JsonProperty("description")
-    private String description;
-    @JsonProperty("type")
-    private String type;
-    @JsonProperty("execution_info")
-    private String executionInfo;
+export interface EntityManagment {
+    create: (entity: any) => void;
+    update: (id: any, entity: any) => void;
 }

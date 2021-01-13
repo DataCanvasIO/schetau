@@ -114,4 +114,25 @@ public class JobServiceImplTest {
         verify(jobMapper, times(1)).findAll();
         verifyNoMoreInteractions(jobMapper);
     }
+
+    @Test
+    public void testUpdate() {
+        when(jobMapper.update(any(Job.class))).thenReturn(1);
+        JobDto job = new JobDto();
+        job.setId(2L);
+        job.setName("test");
+        jobService.update(job);
+        verify(jobMapper, times(1)).update(argThat(arg ->
+            arg.getJobId() == 2L
+                && arg.getJobName().equals("test")
+        ));
+    }
+
+    @Test
+    public void testDelete() {
+        when(jobMapper.deleteById(7L)).thenReturn(1);
+        jobService.delete(7L);
+        verify(jobMapper, times(1)).deleteById(7L);
+        verifyNoMoreInteractions(jobMapper);
+    }
 }

@@ -26,7 +26,11 @@ import java.util.List;
 public interface JobMapper {
     List<Job> findAll();
 
-    Job findById(@Param("id") long id);
+    Job findById(@Param("jobId") long jobId);
 
     int insert(@Param("model") Job model);
+
+    int update(@Param("model") Job model);
+
+    int deleteById(@Param("jobId") long jobId);
 }

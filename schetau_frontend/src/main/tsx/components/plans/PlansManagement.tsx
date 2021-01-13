@@ -17,32 +17,32 @@
 import * as React from "react";
 import { JSONSchema7 } from 'json-schema';
 
-import CheckIcon from '@material-ui/icons/Check';
-
 import { checkStatusHandler } from "../../apis/Api";
-import { NodesApi } from "../../apis/NodesApi";
+import { PlansApi } from "../../apis/PlansApi";
 import { ProfilesApi } from "../../apis/ProfilesApi";
 
 import { EntityList } from "../EntityList";
 
-interface NodesManagementProps {
+interface PlansManagementProps {
 }
 
-interface NodesManagementState {
-    profile: JSONSchema7;
+interface PlansManagementState {
+    responseProfile: JSONSchema7;
 }
 
-export class NodesManagement extends React.Component<NodesManagementProps, NodesManagementState> {
-    public constructor(props: NodesManagementProps) {
+export class PlansManagement extends React.Component<PlansManagementProps, PlansManagementState> {
+    public constructor(props: PlansManagementProps) {
         super(props);
-        this.state = { profile: {} };
+        this.state = {
+            responseProfile: {},
+        };
     }
 
     public componentDidMount(): void {
-        ProfilesApi.get('NodeResponse', (err, res) => {
+        ProfilesApi.get('PlanResponse', (err, res) => {
             console.log('err = ', err, ', res = ', res);
             if (!err) {
-                this.setState({ profile: res.body });
+                this.setState({ responseProfile: res.body });
             }
         });
     }
@@ -50,11 +50,8 @@ export class NodesManagement extends React.Component<NodesManagementProps, Nodes
     public render() {
         return (
             <EntityList
-                profile={this.state.profile}
-                entityProvider={callback => NodesApi.listAll(checkStatusHandler(callback))}
-                valueMappings={{
-                    'is_me': value => value ? <CheckIcon /> : '',
-                }}
+                profile={this.state.responseProfile}
+                entityProvider={callback => PlansApi.listAll(checkStatusHandler(callback))}
             />
         );
     }
