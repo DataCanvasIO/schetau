@@ -29,6 +29,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+import { NodesManagement } from "./nodes/NodesManagement";
+
 enum Management {
     ManageNodes,
     ManageJobs,
@@ -51,28 +53,33 @@ export class MainFrame extends React.Component<MainFrameProps, MainFrameState> {
     }
 
     @autobind
-    private handleOpenNodesManagement(): void {
+    private handleOpenManagement(management: Management): void {
         this.setState({
-            management: Management.ManageNodes,
+            management: management
         });
     }
 
     @autobind
-    private handleOpenJobsManagement(): void {
-        this.setState({
-            management: Management.ManageJobs,
-        });
-    }
-
-    @autobind
-    private handleOpenPlansManagement(): void {
-        this.setState({
-            management: Management.ManagePlans,
-        });
+    private managementLinkItem(target: Management, title: string) {
+        return (
+            <ListItem button
+                onClick={() => this.handleOpenManagement(target)}
+                className={target === this.state.management ? styles['selected'] : ''}>
+                <ListItemText primary={title} />
+            </ListItem>
+        );
     }
 
     @autobind
     private getMainPage() {
+        switch (this.state.management) {
+            case Management.ManageNodes:
+                return <NodesManagement />
+            case Management.ManageJobs:
+            case Management.ManagePlans:
+            default:
+                break;
+        }
         return <Box />;
     }
 
@@ -81,7 +88,7 @@ export class MainFrame extends React.Component<MainFrameProps, MainFrameState> {
             <Paper>
                 <AppBar position="sticky" className={styles['bar']}>
                     <Toolbar>
-                        <Typography variant="h3">ScheTau</Typography>
+                        <Typography variant="h4" component="h1">ScheTau</Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -92,18 +99,14 @@ export class MainFrame extends React.Component<MainFrameProps, MainFrameState> {
                 >
                     <Toolbar></Toolbar>
                     <List component="nav">
-                        <ListItem button onClick={this.handleOpenNodesManagement}>
-                            <ListItemText primary="Nodes" />
-                        </ListItem>
-                        <ListItem button onClick={this.handleOpenJobsManagement}>
-                            <ListItemText primary="Jobs" />
-                        </ListItem>
-                        <ListItem button onClick={this.handleOpenPlansManagement}>
-                            <ListItemText primary="Plans" />
-                        </ListItem>
+                        {this.managementLinkItem(Management.ManageNodes, 'Nodes')}
+                        {this.managementLinkItem(Management.ManageJobs, 'Jobs')}
+                        {this.managementLinkItem(Management.ManagePlans, 'Plans')}
                     </List>
                 </Drawer>
-                {this.getMainPage()}
+                <Box className={styles['panel']} >
+                    {this.getMainPage()}
+                </Box>
             </Paper>
         );
     }

@@ -203,7 +203,7 @@
                             </options>
                         </module>
                     </modules>
-                    <schemaFilePath>${project.build.outputDirectory}/schema</schemaFilePath>
+                    <schemaFilePath>${project.build.outputDirectory}/schemas</schemaFilePath>
                     <schemaFileName>{0}.json</schemaFileName>
                 </configuration>
             </plugin>

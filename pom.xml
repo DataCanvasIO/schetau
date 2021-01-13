@@ -57,6 +57,7 @@
     </developers>
 
     <modules>
+        <module>schetau_frontend</module>
         <module>schetau_server</module>
     </modules>
 
@@ -481,13 +482,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-
-        <profile>
-            <id>frontend</id>
-            <modules>
-                <module>schetau_frontend</module>
-            </modules>
         </profile>
     </profiles>
 

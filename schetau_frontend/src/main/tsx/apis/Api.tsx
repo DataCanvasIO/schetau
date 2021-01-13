@@ -14,31 +14,19 @@
  * limitations under the License.
  */
 
-$zIndex: 1000;
-$drawerWidth: 200px;
+import * as request from "superagent";
 
-.bar {
-    z-index: $zIndex !important;
-}
+export const API_URL_BASE = 'http://localhost:13579/api';
 
-.drawer {
-    z-index: $zIndex - 100 !important;
-    flex-shrink: 0;
-    width: $drawerWidth;
-}
+export type ResponseHandler = (err: any, res: request.Response) => void;
 
-.drawer-paper {
-    z-index: $zIndex - 100 !important;
-    width: $drawerWidth;
-}
-
-.selected {
-    background: {
-        color: yellow !important;
+export function checkStatusHandler(callback: (data: any) => void): ResponseHandler {
+    return (err, res) => {
+        console.log('err = ', err, ', res = ', res);
+        if (res.body.status === '0') {
+            callback(res.body.data);
+        } else {
+            alert(res.body.message);
+        }
     }
-}
-
-.panel {
-    display: flex;
-    margin-left: $drawerWidth;
 }

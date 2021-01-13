@@ -14,31 +14,16 @@
  * limitations under the License.
  */
 
-$zIndex: 1000;
-$drawerWidth: 200px;
+import * as request from "superagent";
 
-.bar {
-    z-index: $zIndex !important;
-}
+import { API_URL_BASE } from "./Api";
+import { ResponseHandler } from "./Api";
 
-.drawer {
-    z-index: $zIndex - 100 !important;
-    flex-shrink: 0;
-    width: $drawerWidth;
-}
-
-.drawer-paper {
-    z-index: $zIndex - 100 !important;
-    width: $drawerWidth;
-}
-
-.selected {
-    background: {
-        color: yellow !important;
+export class NodesApi {
+    public static listAll(callback: ResponseHandler): void {
+        request
+            .get(API_URL_BASE + '/nodes')
+            .send()
+            .end(callback);
     }
-}
-
-.panel {
-    display: flex;
-    margin-left: $drawerWidth;
 }

@@ -53,6 +53,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(@Nonnull ResourceHandlerRegistry registry) {
         registry
             .addResourceHandler("/api/profiles/**")
-            .addResourceLocations("classpath:/schema/");
+            .addResourceLocations("classpath:/schemas/");
     }
 }
