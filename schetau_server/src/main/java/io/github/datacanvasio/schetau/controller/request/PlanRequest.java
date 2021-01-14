@@ -21,14 +21,25 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
 @Data
-@JsonPropertyOrder({"name", "description", "type", "execution_info"})
-public class JobRequest {
+@JsonPropertyOrder({
+    "name",
+    "first_run_time",
+    "run_interval",
+    "expire_time",
+    "wait_timeout",
+    "signal_definition",
+})
+public class PlanRequest {
     @JsonProperty("name")
     private String name;
-    @JsonProperty("description")
-    private String description;
-    @JsonProperty("type")
-    private String type;
-    @JsonProperty("execution_info")
-    private String executionInfo;
+    @JsonProperty("first_run_time")
+    private Long firstRunTime;
+    @JsonProperty("run_interval")
+    private Long runInterval;
+    @JsonProperty("expire_time")
+    private Long expireTime;
+    @JsonProperty("wait_timeout")
+    private Long waitTimeout;
+    @JsonProperty("signal_definition")
+    private String signalDefinition;
 }

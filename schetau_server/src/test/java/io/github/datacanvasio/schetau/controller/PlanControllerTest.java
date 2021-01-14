@@ -19,8 +19,9 @@ package io.github.datacanvasio.schetau.controller;
 import io.github.datacanvasio.schetau.config.WebMvcConfigDev;
 import io.github.datacanvasio.schetau.controller.advise.GlobalExceptionHandler;
 import io.github.datacanvasio.schetau.controller.advise.ResponseBodyDecorator;
-import io.github.datacanvasio.schetau.service.JobService;
+import io.github.datacanvasio.schetau.service.PlanService;
 import io.github.datacanvasio.schetau.service.dto.JobDto;
+import io.github.datacanvasio.schetau.service.dto.PlanDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,25 +53,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = {JobController.class})
-public class JobControllerTest {
-    private static final String URL_BASE = "/api/jobs";
+@WebMvcTest(controllers = {PlanController.class})
+public class PlanControllerTest {
+    private static final String URL_BASE = "/api/plans";
     private static final String URL_WITH_ID = URL_BASE + "/{id}";
 
     @Autowired
     private MockMvc mvc;
 
     @MockBean
-    private JobService jobService;
+    private PlanService planService;
 
     @Test
     public void testListAll() throws Exception {
+        PlanDto plan = new PlanDto();
+        plan.setId(1L);
+        plan.setName("test");
         JobDto job = new JobDto();
-        job.setId(1L);
-        job.setName("test");
-        job.setType("CmdLine");
-        job.setDescription("for test");
-        when(jobService.listAll()).thenReturn(Collections.singletonList(job));
+        job.setId(2L);
+        job.setName("testJob");
+        plan.setJobs(Collections.singletonList(job));
+        when(planService.listAll()).thenReturn(Collections.singletonList(plan));
         mvc.perform(
             get(URL_BASE)
                 .accept(MediaType.APPLICATION_JSON)
@@ -79,18 +82,18 @@ public class JobControllerTest {
             .andExpect(success())
             .andExpect(jsonPath("$.data[0].id").value(1L))
             .andExpect(jsonPath("$.data[0].name").value("test"))
-            .andExpect(jsonPath("$.data[0].type").value("CmdLine"))
-            .andExpect(jsonPath("$.data[0].description").value("for test"));
-        verify(jobService, times(1)).listAll();
-        verifyNoMoreInteractions(jobService);
+            .andExpect(jsonPath("$.data[0].jobs[0]").value("testJob"));
+        verify(planService, times(1)).listAll();
+        verifyNoMoreInteractions(planService);
     }
 
     @Test
     public void testCreate() throws Exception {
-        when(jobService.create(any(JobDto.class))).then(args -> {
-            JobDto job = args.getArgument(0);
-            job.setId(5L);
-            return job;
+        when(planService.create(any(PlanDto.class))).then(args -> {
+            PlanDto plan = args.getArgument(0);
+            plan.setId(5L);
+            plan.setNextRunTime(plan.getFirstRunTime());
+            return plan;
         });
         mvc.perform(
             post(URL_BASE)
@@ -98,19 +101,18 @@ public class JobControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{"
                     + "\"name\": \"test\","
-                    + "\"description\": \"for test\","
-                    + "\"type\": \"CmdLine\","
-                    + "\"execution_info\": \"ls\""
+                    + "\"first_run_time\": 10000,"
+                    + "\"run_interval\": 1000"
                     + "}")
         )
             .andDo(print())
             .andExpect(success())
             .andExpect(jsonPath("$.data.id").value(5L))
             .andExpect(jsonPath("$.data.name").value("test"))
-            .andExpect(jsonPath("$.data.type").value("CmdLine"))
-            .andExpect(jsonPath("$.data.description").value("for test"));
-        verify(jobService, times(1)).create(any(JobDto.class));
-        verifyNoMoreInteractions(jobService);
+            .andExpect(jsonPath("$.data.first_run_time").value(10000))
+            .andExpect(jsonPath("$.data.next_run_time").value(10000));
+        verify(planService, times(1)).create(any(PlanDto.class));
+        verifyNoMoreInteractions(planService);
     }
 
     @Test
@@ -120,16 +122,16 @@ public class JobControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{"
-                    + "\"description\": \"for test\""
+                    + "\"name\": \"testUpdate\""
                     + "}")
         )
             .andDo(print())
             .andExpect(success());
-        verify(jobService, times(1)).update(argThat(arg ->
+        verify(planService, times(1)).update(argThat(arg ->
             arg.getId() == 2L
-                && arg.getDescription().equals("for test")
+                && arg.getName().equals("testUpdate")
         ));
-        verifyNoMoreInteractions(jobService);
+        verifyNoMoreInteractions(planService);
     }
 
     @Test
@@ -140,15 +142,15 @@ public class JobControllerTest {
         )
             .andDo(print())
             .andExpect(success());
-        verify(jobService, times(1)).delete(3L);
-        verifyNoMoreInteractions(jobService);
+        verify(planService, times(1)).delete(3L);
+        verifyNoMoreInteractions(planService);
     }
 
     // Mock application
     @Configuration
     @EnableAutoConfiguration
     @Import({
-        JobController.class,
+        PlanController.class,
         ResponseBodyDecorator.class,
         GlobalExceptionHandler.class,
         WebMvcConfigDev.class,

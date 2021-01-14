@@ -33,6 +33,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,20 +60,45 @@ public class PlanMapperTest {
         );
     }
 
+    private static void assertPlanJobs(@Nonnull Plan model) {
+        switch (model.getPlanId().intValue()) {
+            case 1:
+                assertThat(model.getJobs().size()).isEqualTo(2);
+                assertThat(model.getJobs())
+                    .contains(jobList.get(0), jobList.get(1));
+                break;
+            case 2:
+                assertThat(model.getJobs()).isEmpty();
+                break;
+            case 3:
+            case 4:
+                assertThat(model.getJobs().size()).isEqualTo(1);
+                assertThat(model.getJobs())
+                    .contains(jobList.get(0));
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Test
+    public void testFindAllWithJobs() {
+        List<Plan> models = planMapper.findAllWithJobs();
+        assertThat(models.size()).isEqualTo(4);
+        assertThat(models)
+            .contains(modelList.get(0))
+            .contains(modelList.get(1))
+            .contains(modelList.get(2))
+            .contains(modelList.get(3));
+        models.forEach(PlanMapperTest::assertPlanJobs);
+    }
+
     @Test
     public void testFindByNextRunTimeBeforeWithJobs() {
         List<Plan> models = planMapper.findByNextRunTimeBeforeWithJobs(2000L);
         assertThat(models.size()).isEqualTo(2);
         assertThat(models).contains(modelList.get(0), modelList.get(1));
-        for (Plan model : models) {
-            if (model.getPlanId() == 1) {
-                assertThat(model.getJobs())
-                    .contains(jobList.get(0), jobList.get(1));
-            } else if (model.getPlanId() == 2) {
-                assertThat(model.getJobs())
-                    .isEmpty();
-            }
-        }
+        models.forEach(PlanMapperTest::assertPlanJobs);
     }
 
     @Test
@@ -99,6 +125,12 @@ public class PlanMapperTest {
         model.setRunTimes(1L);
         model.setNextRunTime(9000L);
         int n = planMapper.update(model);
+        assertThat(n).isEqualTo(1);
+    }
+
+    @Test
+    public void testDelete() {
+        int n = planMapper.deleteById(2L);
         assertThat(n).isEqualTo(1);
     }
 

@@ -35,6 +35,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,6 +78,59 @@ public class PlanServiceImplTest {
             arg.getPlanName().equals("test")
                 && arg.getFirstRunTime() == 2000L
         ));
+    }
+
+    @Test
+    public void testListAll() {
+        Plan model = new Plan();
+        model.setPlanId(1L);
+        model.setPlanName("test");
+        model.setFirstRunTime(10000L);
+        model.setRunInterval(0L);
+        model.setRunTimes(0L);
+        model.setNextRunTime(10000L);
+        model.setExpireTime(-1L);
+        model.setSignalDefinition(null);
+        Job job = new Job();
+        job.setJobId(2L);
+        model.setJobs(Collections.singletonList(job));
+        when(planMapper.findAllWithJobs()).thenReturn(Collections.singletonList(model));
+        List<PlanDto> plans = planService.listAll();
+        assertThat(plans.size()).isEqualTo(1);
+        assertThat(plans.get(0))
+            .hasFieldOrPropertyWithValue("id", 1L)
+            .hasFieldOrPropertyWithValue("name", "test")
+            .hasFieldOrPropertyWithValue("firstRunTime", 10000L)
+            .hasFieldOrPropertyWithValue("runInterval", 0L)
+            .hasFieldOrPropertyWithValue("runTimes", 0L)
+            .hasFieldOrPropertyWithValue("nextRunTime", 10000L)
+            .hasFieldOrPropertyWithValue("expireTime", -1L);
+        assertThat(plans.get(0).getJobs().size()).isEqualTo(1);
+        assertThat(plans.get(0).getJobs().get(0))
+            .hasFieldOrPropertyWithValue("id", 2L);
+        verify(planMapper, times(1)).findAllWithJobs();
+    }
+
+    @Test
+    public void testUpdate() {
+        when(planMapper.update(any(Plan.class))).thenReturn(1);
+        PlanDto plan = new PlanDto();
+        plan.setId(3L);
+        plan.setName("testUpdate");
+        planService.update(plan);
+        verify(planMapper, times(1)).update(argThat(arg ->
+            arg.getPlanId() == 3L
+                && arg.getPlanName().equals("testUpdate")
+        ));
+        verifyNoMoreInteractions(planMapper);
+    }
+
+    @Test
+    public void testDelete() {
+        when(planMapper.deleteById(3L)).thenReturn(1);
+        planService.delete(3L);
+        verify(planMapper, times(1)).deleteById(3L);
+        verifyNoMoreInteractions(planMapper);
     }
 
     @Test

@@ -49,6 +49,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(controllers = {NodeController.class})
 public class NodeControllerTest {
+    private static final String URL_BASE = "/api/nodes";
+
     @Autowired
     private MockMvc mvc;
 
@@ -64,7 +66,7 @@ public class NodeControllerTest {
         when(nodeService.me()).thenReturn(node);
         when(nodeService.listAll()).thenReturn(Collections.singletonList(node));
         mvc.perform(
-            get("/api/nodes")
+            get(URL_BASE)
                 .contentType(MediaType.APPLICATION_JSON)
         )
             .andDo(print())

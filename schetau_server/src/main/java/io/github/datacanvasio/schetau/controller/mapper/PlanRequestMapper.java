@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.service;
+package io.github.datacanvasio.schetau.controller.mapper;
 
+import io.github.datacanvasio.schetau.controller.request.PlanRequest;
 import io.github.datacanvasio.schetau.service.dto.PlanDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+@Mapper
+public interface PlanRequestMapper {
+    PlanRequestMapper MAPPER = Mappers.getMapper(PlanRequestMapper.class);
 
-public interface PlanService {
-    PlanDto create(PlanDto plan);
-
-    List<PlanDto> listAll();
-
-    void update(PlanDto plan);
-
-    void delete(long id);
-
-    void createTasks(long currentTime);
+    PlanDto toPlan(PlanRequest request);
 }

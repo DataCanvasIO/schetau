@@ -14,23 +14,45 @@
  * limitations under the License.
  */
 
-package io.github.datacanvasio.schetau.service.dto;
+package io.github.datacanvasio.schetau.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class PlanDto {
+@JsonPropertyOrder({
+    "name",
+    "first_run_time",
+    "run_interval",
+    "expire_time",
+    "wait_timeout",
+    "signal_definition",
+    "jobs",
+    "run_times",
+    "next_run_time",
+})
+public class PlanResponse {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("first_run_time")
     private Long firstRunTime;
+    @JsonProperty("run_interval")
     private Long runInterval;
+    @JsonProperty("expire_time")
     private Long expireTime;
+    @JsonProperty("wait_timeout")
     private Long waitTimeout;
+    @JsonProperty("signal_definition")
     private String signalDefinition;
-    private List<JobDto> jobs;
-    // volatile
+    @JsonProperty("jobs")
+    private List<String> jobs;
+    @JsonProperty("run_times")
     private Long runTimes;
+    @JsonProperty("next_run_time")
     private Long nextRunTime;
 }

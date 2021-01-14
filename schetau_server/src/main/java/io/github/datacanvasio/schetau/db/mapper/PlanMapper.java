@@ -24,9 +24,13 @@ import java.util.List;
 
 @Mapper
 public interface PlanMapper {
+    List<Plan> findAllWithJobs();
+
     List<Plan> findByNextRunTimeBeforeWithJobs(@Param("time") long time);
 
     int insert(@Param("model") Plan model);
 
     int update(@Param("model") Plan model);
+
+    int deleteById(@Param("planId") long planId);
 }

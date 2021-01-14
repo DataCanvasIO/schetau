@@ -50,6 +50,21 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
+    public List<PlanDto> listAll() {
+        return PlanDtoMapper.MAPPER.fromModels(planMapper.findAllWithJobs());
+    }
+
+    @Override
+    public void update(PlanDto plan) {
+        planMapper.update(PlanDtoMapper.MAPPER.toModel(plan));
+    }
+
+    @Override
+    public void delete(long id) {
+        planMapper.deleteById(id);
+    }
+
+    @Override
     public void createTasks(long currentTime) {
         List<PlanDto> plans = PlanDtoMapper.MAPPER.fromModels(
             planMapper.findByNextRunTimeBeforeWithJobs(currentTime)
