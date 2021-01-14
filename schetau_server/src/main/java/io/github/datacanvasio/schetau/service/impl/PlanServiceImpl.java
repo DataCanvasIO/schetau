@@ -16,6 +16,7 @@
 
 package io.github.datacanvasio.schetau.service.impl;
 
+import io.github.datacanvasio.schetau.db.mapper.PlanJobMapper;
 import io.github.datacanvasio.schetau.db.mapper.PlanMapper;
 import io.github.datacanvasio.schetau.db.model.Plan;
 import io.github.datacanvasio.schetau.db.model.TaskStatus;
@@ -38,6 +39,8 @@ import java.util.List;
 public class PlanServiceImpl implements PlanService {
     @Autowired
     private PlanMapper planMapper;
+    @Autowired
+    private PlanJobMapper planJobMapper;
 
     @Autowired
     private TaskService taskService;
@@ -62,6 +65,16 @@ public class PlanServiceImpl implements PlanService {
     @Override
     public void delete(long id) {
         planMapper.deleteById(id);
+    }
+
+    @Override
+    public void addJob(long id, long jobId) {
+        planJobMapper.insert(id, jobId);
+    }
+
+    @Override
+    public void removeJob(long id, long jobId) {
+        planJobMapper.delete(id, jobId);
     }
 
     @Override

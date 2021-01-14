@@ -20,9 +20,32 @@ import { API_URL_BASE } from "./Api";
 import { ResponseHandler } from "./Api";
 
 export class PlansApi {
+    public static readonly BaseUrl = API_URL_BASE + '/plans';
+
     public static listAll(callback?: ResponseHandler): void {
         request
-            .get(API_URL_BASE + '/plans')
+            .get(PlansApi.BaseUrl)
+            .send()
+            .end(callback);
+    }
+
+    public static create(data: any, callback?: ResponseHandler): void {
+        request
+            .post(PlansApi.BaseUrl)
+            .send(data)
+            .end(callback);
+    }
+
+    public static update(id: any, data: any, callback?: ResponseHandler): void {
+        request
+            .put(PlansApi.BaseUrl + '/' + id)
+            .send(data)
+            .end(callback);
+    }
+
+    public static delete(id: any, callback?: ResponseHandler): void {
+        request
+            .delete(PlansApi.BaseUrl + '/' + id)
             .send()
             .end(callback);
     }

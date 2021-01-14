@@ -73,18 +73,8 @@ export class JobsManagement extends React.Component<JobsManagementProps, JobsMan
     }
 
     public componentDidMount(): void {
-        ProfilesApi.get('JobResponse', (err, res) => {
-            console.log('err = ', err, ', res = ', res);
-            if (!err) {
-                this.setState({ responseProfile: res.body });
-            }
-        });
-        ProfilesApi.get('JobRequest', (err, res) => {
-            console.log('err = ', err, ', res = ', res);
-            if (!err) {
-                this.setState({ requestProfile: res.body });
-            }
-        });
+        ProfilesApi.get('JobResponse', data => this.setState({ responseProfile: data }));
+        ProfilesApi.get('JobRequest', data => this.setState({ requestProfile: data }));
     }
 
     public render() {

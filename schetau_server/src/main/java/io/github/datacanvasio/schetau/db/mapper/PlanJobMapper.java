@@ -20,4 +20,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface PlanJobMapper {
     int insert(@Param("planId") long planId, @Param("jobId") long jobId);
+
+    int delete(@Param("planId") long planId, @Param("jobId") long jobId);
 }

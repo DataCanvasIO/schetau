@@ -20,10 +20,19 @@ import { API_URL_BASE } from "./Api";
 import { ResponseHandler } from "./Api";
 
 export class ProfilesApi {
-    public static get(name: string, callback?: ResponseHandler): void {
+    public static getByName(name: string, callback?: ResponseHandler): void {
         request
             .get(API_URL_BASE + '/profiles/' + name + '.json')
             .send()
             .end(callback);
+    }
+
+    public static get(name: string, callback?: (data: any) => void): void {
+        return ProfilesApi.getByName(name, (err, res) => {
+            console.log('err = ', err, ', res = ', res);
+            if (!err && typeof callback === 'function') {
+                callback(res.body);
+            }
+        });
     }
 }

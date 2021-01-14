@@ -28,4 +28,13 @@
         (plan_id, job_id)
         values(#{planId}, #{jobId})
     </insert>
+
+    <delete id="delete" parameterType="map">
+        delete from
+        <include refid="table"/>
+        <where>
+            plan_id = #{planId}
+            and job_id = #{jobId}
+        </where>
+    </delete>
 </mapper>

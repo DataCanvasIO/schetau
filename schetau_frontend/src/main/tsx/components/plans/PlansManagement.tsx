@@ -15,44 +15,92 @@
  */
 
 import * as React from "react";
+import { autobind } from "core-decorators";
 import { JSONSchema7 } from 'json-schema';
+
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 
 import { checkStatusHandler } from "../../apis/Api";
 import { PlansApi } from "../../apis/PlansApi";
 import { ProfilesApi } from "../../apis/ProfilesApi";
 
 import { EntityList } from "../EntityList";
+import { EntityDialog } from "../EntityDialog";
 
 interface PlansManagementProps {
 }
 
 interface PlansManagementState {
+    requestProfile: JSONSchema7;
     responseProfile: JSONSchema7;
 }
 
 export class PlansManagement extends React.Component<PlansManagementProps, PlansManagementState> {
+    private lst: React.RefObject<EntityList> = React.createRef();
+    private dlg: React.RefObject<EntityDialog> = React.createRef();
+
     public constructor(props: PlansManagementProps) {
         super(props);
         this.state = {
+            requestProfile: {},
             responseProfile: {},
         };
     }
 
+    @autobind
+    public createOrUpdate(entity: any, id?: any) {
+        if (id) {
+            PlansApi.update(id, entity, this.lst.current?.refreshAfterChange());
+        } else {
+            PlansApi.create(entity, this.lst.current?.refreshAfterChange());
+        }
+    }
+
+    @autobind
+    public delete(id: any) {
+        PlansApi.delete(id, this.lst.current?.refreshAfterChange());
+    }
+
+    @autobind
+    private handleOpenCreate() {
+        this.dlg.current?.open(null);
+    }
+
+    @autobind
+    private handleOpenUpdate(id: any, entity: any) {
+        this.dlg.current?.open(entity, id);
+    }
+
     public componentDidMount(): void {
-        ProfilesApi.get('PlanResponse', (err, res) => {
-            console.log('err = ', err, ', res = ', res);
-            if (!err) {
-                this.setState({ responseProfile: res.body });
-            }
-        });
+        ProfilesApi.get('PlanResponse', data => this.setState({ responseProfile: data }));
+        ProfilesApi.get('PlanRequest', data => this.setState({ requestProfile: data }));
     }
 
     public render() {
         return (
-            <EntityList
-                profile={this.state.responseProfile}
-                entityProvider={callback => PlansApi.listAll(checkStatusHandler(callback))}
-            />
+            <React.Fragment>
+                <Box>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={this.handleOpenCreate}
+                    > Create Plan </Button>
+                    <EntityList
+                        ref={this.lst}
+                        profile={this.state.responseProfile}
+                        handleUpdate={this.handleOpenUpdate}
+                        handleDelete={this.delete}
+                        entityProvider={callback => PlansApi.listAll(checkStatusHandler(callback))}
+                    />
+                </Box>
+                <EntityDialog
+                    ref={this.dlg}
+                    profile={this.state.requestProfile}
+                    entityName="Plan"
+                    handleCreateUpdate={this.createOrUpdate}
+                />
+            </React.Fragment>
         );
     }
 }

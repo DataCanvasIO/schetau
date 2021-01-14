@@ -16,6 +16,7 @@
 
 package io.github.datacanvasio.schetau.service.impl;
 
+import io.github.datacanvasio.schetau.db.mapper.PlanJobMapper;
 import io.github.datacanvasio.schetau.db.mapper.PlanMapper;
 import io.github.datacanvasio.schetau.db.model.Job;
 import io.github.datacanvasio.schetau.db.model.Plan;
@@ -39,6 +40,7 @@ import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -58,6 +60,8 @@ public class PlanServiceImplTest {
 
     @MockBean
     private PlanMapper planMapper;
+    @MockBean
+    private PlanJobMapper planJobMapper;
 
     @MockBean
     private TaskService taskService;
@@ -78,6 +82,9 @@ public class PlanServiceImplTest {
             arg.getPlanName().equals("test")
                 && arg.getFirstRunTime() == 2000L
         ));
+        verifyNoMoreInteractions(planMapper);
+        verifyNoInteractions(planJobMapper);
+        verifyNoInteractions(taskService);
     }
 
     @Test
@@ -109,6 +116,9 @@ public class PlanServiceImplTest {
         assertThat(plans.get(0).getJobs().get(0))
             .hasFieldOrPropertyWithValue("id", 2L);
         verify(planMapper, times(1)).findAllWithJobs();
+        verifyNoMoreInteractions(planMapper);
+        verifyNoInteractions(planJobMapper);
+        verifyNoInteractions(taskService);
     }
 
     @Test
@@ -123,6 +133,8 @@ public class PlanServiceImplTest {
                 && arg.getPlanName().equals("testUpdate")
         ));
         verifyNoMoreInteractions(planMapper);
+        verifyNoInteractions(planJobMapper);
+        verifyNoInteractions(taskService);
     }
 
     @Test
@@ -131,6 +143,28 @@ public class PlanServiceImplTest {
         planService.delete(3L);
         verify(planMapper, times(1)).deleteById(3L);
         verifyNoMoreInteractions(planMapper);
+        verifyNoInteractions(planJobMapper);
+        verifyNoInteractions(taskService);
+    }
+
+    @Test
+    public void testAddJob() {
+        when(planJobMapper.insert(anyLong(), anyLong())).thenReturn(1);
+        planService.addJob(2L, 3L);
+        verify(planJobMapper, times(1)).insert(2L, 3L);
+        verifyNoMoreInteractions(planJobMapper);
+        verifyNoInteractions(planMapper);
+        verifyNoInteractions(taskService);
+    }
+
+    @Test
+    public void testRemoveJob() {
+        when(planJobMapper.delete(anyLong(), anyLong())).thenReturn(1);
+        planService.removeJob(2L, 3L);
+        verify(planJobMapper, times(1)).delete(2L, 3L);
+        verifyNoMoreInteractions(planJobMapper);
+        verifyNoInteractions(planMapper);
+        verifyNoInteractions(taskService);
     }
 
     @Test
@@ -149,7 +183,7 @@ public class PlanServiceImplTest {
         model.setJobs(Collections.singletonList(job));
         when(planMapper.findByNextRunTimeBeforeWithJobs(10000L)).thenReturn(Collections.singletonList(model));
         planService.createTasks(10000L);
-        InOrder inOrder = Mockito.inOrder(planMapper, taskService);
+        InOrder inOrder = Mockito.inOrder(planMapper, planJobMapper, taskService);
         inOrder.verify(planMapper, times(1)).findByNextRunTimeBeforeWithJobs(10000L);
         inOrder.verify(taskService, times(1)).create(argThat(arg ->
             arg.getPlanId() == 1L
@@ -180,7 +214,7 @@ public class PlanServiceImplTest {
         model.setJobs(Collections.singletonList(job));
         when(planMapper.findByNextRunTimeBeforeWithJobs(10000L)).thenReturn(Collections.singletonList(model));
         planService.createTasks(10000L);
-        InOrder inOrder = Mockito.inOrder(planMapper, taskService);
+        InOrder inOrder = Mockito.inOrder(planMapper, planJobMapper, taskService);
         inOrder.verify(planMapper, times(1)).findByNextRunTimeBeforeWithJobs(10000L);
         inOrder.verify(taskService, times(1)).create(argThat(arg ->
             arg.getPlanId() == 1L
@@ -202,6 +236,7 @@ public class PlanServiceImplTest {
         planService.createTasks(10000L);
         verify(planMapper, times(1)).findByNextRunTimeBeforeWithJobs(10000L);
         verifyNoMoreInteractions(planMapper);
+        verifyNoInteractions(planJobMapper);
         verifyNoInteractions(taskService);
     }
 }

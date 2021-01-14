@@ -39,12 +39,7 @@ export class NodesManagement extends React.Component<NodesManagementProps, Nodes
     }
 
     public componentDidMount(): void {
-        ProfilesApi.get('NodeResponse', (err, res) => {
-            console.log('err = ', err, ', res = ', res);
-            if (!err) {
-                this.setState({ profile: res.body });
-            }
-        });
+        ProfilesApi.get('NodeResponse', data => this.setState({ profile: data }));
     }
 
     public render() {

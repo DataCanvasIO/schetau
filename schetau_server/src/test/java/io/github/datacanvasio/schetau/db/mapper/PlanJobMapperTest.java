@@ -26,11 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("test")
 @MybatisTest
@@ -46,6 +48,25 @@ public class PlanJobMapperTest {
     public void testInsert() {
         int n = planJobMapper.insert(2L, 1L);
         assertThat(n).isEqualTo(1);
+    }
+
+    @Test
+    public void testInsertExist() {
+        assertThrows(DuplicateKeyException.class, () ->
+            planJobMapper.insert(1L, 1L)
+        );
+    }
+
+    @Test
+    public void testDelete() {
+        int n = planJobMapper.delete(1L, 1L);
+        assertThat(n).isEqualTo(1);
+    }
+
+    @Test
+    public void testDeleteNonExist() {
+        int n = planJobMapper.delete(2L, 1L);
+        assertThat(n).isEqualTo(0);
     }
 
     @Configuration

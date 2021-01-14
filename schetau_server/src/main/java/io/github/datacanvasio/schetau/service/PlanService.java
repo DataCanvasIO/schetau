@@ -29,5 +29,9 @@ public interface PlanService {
 
     void delete(long id);
 
+    void addJob(long id, long jobId);
+
+    void removeJob(long id, long jobId);
+
     void createTasks(long currentTime);
 }
