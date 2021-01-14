@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-export interface EntityManagment {
-    create: (entity: any) => void;
-    update: (id: any, entity: any) => void;
+package io.github.datacanvasio.schetau.controller.request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.Data;
+
+@Data
+@JsonPropertyOrder({"job_id"})
+public class JobIdRequest {
+    @JsonProperty("job_id")
+    private Long jobId;
 }

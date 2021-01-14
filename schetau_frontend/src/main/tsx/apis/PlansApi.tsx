@@ -49,4 +49,18 @@ export class PlansApi {
             .send()
             .end(callback);
     }
+
+    public static addJob(id: any, job: any, callback?: ResponseHandler): void {
+        request
+            .put(PlansApi.BaseUrl + '/' + id + '/jobs')
+            .send(job)
+            .end(callback);
+    }
+
+    public static removeJob(id: any, job: any, callback?: ResponseHandler): void {
+        request
+            .delete(PlansApi.BaseUrl + '/' + id + '/jobs')
+            .send(job)
+            .end(callback);
+    }
 }

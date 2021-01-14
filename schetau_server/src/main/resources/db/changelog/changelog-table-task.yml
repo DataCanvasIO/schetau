@@ -47,7 +47,9 @@ databaseChangeLog:
                   name: signal_id
                   type: long
                   constraints:
-                    nullable: false
+                    foreignKeyName: fk_task_signal_id
+                    references: schetau_signal(signal_id)
+                    deleteCascade: true
               - column:
                   name: task_status
                   type: char(32)

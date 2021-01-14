@@ -28,14 +28,15 @@ import Box from '@material-ui/core/Box';
 
 interface EntityDialogProps {
     profile: any;
-    entityName: string;
-    handleCreateUpdate: (entity: any, id?: any) => void;
+    handleCreateUpdate: (entity: any, id?: any, flag?: any) => void;
 }
 
 interface EntityDialogState {
     isOpen: boolean;
+    title: string;
     id?: any;
     data?: any;
+    flag?: any;
 }
 
 export class EntityDialog extends React.Component<EntityDialogProps, EntityDialogState> {
@@ -43,15 +44,18 @@ export class EntityDialog extends React.Component<EntityDialogProps, EntityDialo
         super(props);
         this.state = {
             isOpen: false,
+            title: '',
         };
     }
 
     @autobind
-    public open(entity: any, id?: any): void {
+    public open(title: string, entity: any, id?: any, flag?: any): void {
         this.setState({
             isOpen: true,
+            title: title,
             id: id,
             data: entity,
+            flag: flag,
         });
     }
 
@@ -65,7 +69,7 @@ export class EntityDialog extends React.Component<EntityDialogProps, EntityDialo
     @autobind
     private handleSubmit(event: ISubmitEvent<any>): void {
         const entity = event.formData;
-        this.props.handleCreateUpdate(entity, this.state.id);
+        this.props.handleCreateUpdate(entity, this.state.id, this.state.flag);
         this.handleClose();
     }
 
@@ -91,7 +95,7 @@ export class EntityDialog extends React.Component<EntityDialogProps, EntityDialo
         }
         return (
             <Dialog disableBackdropClick open={this.state.isOpen} onClose={this.handleClose}>
-                <DialogTitle>{this.state.id ? 'Update' : 'Create'} {this.props.entityName}</DialogTitle>
+                <DialogTitle>{this.state.title}</DialogTitle>
                 <DialogContent>{dlgContent}</DialogContent>
             </Dialog>
         );

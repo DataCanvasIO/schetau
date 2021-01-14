@@ -27,6 +27,7 @@ import { ProfilesApi } from "../../apis/ProfilesApi";
 
 import { EntityList } from "../EntityList";
 import { EntityDialog } from "../EntityDialog";
+import { deleteButton, updateButton } from "../EntityUtils";
 
 interface JobsManagementProps {
 }
@@ -49,7 +50,7 @@ export class JobsManagement extends React.Component<JobsManagementProps, JobsMan
     }
 
     @autobind
-    public createOrUpdate(entity: any, id?: any) {
+    private createOrUpdate(entity: any, id?: any) {
         if (id) {
             JobsApi.update(id, entity, this.lst.current?.refreshAfterChange());
         } else {
@@ -58,18 +59,21 @@ export class JobsManagement extends React.Component<JobsManagementProps, JobsMan
     }
 
     @autobind
-    public delete(id: any) {
+    private delete(id: any) {
         JobsApi.delete(id, this.lst.current?.refreshAfterChange());
     }
 
     @autobind
     private handleOpenCreate() {
-        this.dlg.current?.open(null);
+        const entity = {
+            type: 'CmdLine',
+        };
+        this.dlg.current?.open('Create Job', entity);
     }
 
     @autobind
     private handleOpenUpdate(id: any, entity: any) {
-        this.dlg.current?.open(entity, id);
+        this.dlg.current?.open('Update Job', entity, id);
     }
 
     public componentDidMount(): void {
@@ -89,15 +93,22 @@ export class JobsManagement extends React.Component<JobsManagementProps, JobsMan
                     <EntityList
                         ref={this.lst}
                         profile={this.state.responseProfile}
-                        handleUpdate={this.handleOpenUpdate}
-                        handleDelete={this.delete}
+                        additinalColumns={{
+                            __update__: {
+                                header: 'Edit',
+                                value: (id, entity) => updateButton(id, entity, this.handleOpenUpdate),
+                            },
+                            __delete__: {
+                                header: 'Delete',
+                                value: (id, _entity) => deleteButton(id, this.delete),
+                            },
+                        }}
                         entityProvider={callback => JobsApi.listAll(checkStatusHandler(callback))}
                     />
                 </Box>
                 <EntityDialog
                     ref={this.dlg}
                     profile={this.state.requestProfile}
-                    entityName="Job"
                     handleCreateUpdate={this.createOrUpdate}
                 />
             </React.Fragment>

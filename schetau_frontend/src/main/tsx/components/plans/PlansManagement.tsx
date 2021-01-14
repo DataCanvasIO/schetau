@@ -27,6 +27,7 @@ import { ProfilesApi } from "../../apis/ProfilesApi";
 
 import { EntityList } from "../EntityList";
 import { EntityDialog } from "../EntityDialog";
+import { deleteButton, updateButton } from "../EntityUtils";
 
 interface PlansManagementProps {
 }
@@ -34,22 +35,25 @@ interface PlansManagementProps {
 interface PlansManagementState {
     requestProfile: JSONSchema7;
     responseProfile: JSONSchema7;
+    jobIdProfile: JSONSchema7;
 }
 
 export class PlansManagement extends React.Component<PlansManagementProps, PlansManagementState> {
     private lst: React.RefObject<EntityList> = React.createRef();
     private dlg: React.RefObject<EntityDialog> = React.createRef();
+    private dlg_job: React.RefObject<EntityDialog> = React.createRef();
 
     public constructor(props: PlansManagementProps) {
         super(props);
         this.state = {
             requestProfile: {},
             responseProfile: {},
+            jobIdProfile: {},
         };
     }
 
     @autobind
-    public createOrUpdate(entity: any, id?: any) {
+    private createOrUpdate(entity: any, id?: any) {
         if (id) {
             PlansApi.update(id, entity, this.lst.current?.refreshAfterChange());
         } else {
@@ -58,23 +62,40 @@ export class PlansManagement extends React.Component<PlansManagementProps, Plans
     }
 
     @autobind
-    public delete(id: any) {
+    private delete(id: any) {
         PlansApi.delete(id, this.lst.current?.refreshAfterChange());
     }
 
     @autobind
+    private addRemoveJob(entity: any, id: any, flag: any) {
+        if (flag === 'ADD') {
+            PlansApi.addJob(id, entity, this.lst.current?.refreshAfterChange());
+        } else if (flag === 'REMOVE') {
+            PlansApi.removeJob(id, entity, this.lst.current?.refreshAfterChange());
+        }
+    }
+
+    @autobind
     private handleOpenCreate() {
-        this.dlg.current?.open(null);
+        this.dlg.current?.open('Create Plan', null);
     }
 
     @autobind
     private handleOpenUpdate(id: any, entity: any) {
-        this.dlg.current?.open(entity, id);
+        this.dlg.current?.open('Update Plan', entity, id);
+    }
+
+    @autobind
+    private buttonOpenAddRemoveJob(title: string, id: any, flag: string) {
+        return (
+            <Button onClick={() => this.dlg_job.current?.open(title, null, id, flag)}>{title}</Button>
+        );
     }
 
     public componentDidMount(): void {
         ProfilesApi.get('PlanResponse', data => this.setState({ responseProfile: data }));
         ProfilesApi.get('PlanRequest', data => this.setState({ requestProfile: data }));
+        ProfilesApi.get('JobIdRequest', data => this.setState({ jobIdProfile: data }));
     }
 
     public render() {
@@ -89,16 +110,36 @@ export class PlansManagement extends React.Component<PlansManagementProps, Plans
                     <EntityList
                         ref={this.lst}
                         profile={this.state.responseProfile}
-                        handleUpdate={this.handleOpenUpdate}
-                        handleDelete={this.delete}
+                        additinalColumns={{
+                            __update__: {
+                                header: 'Edit',
+                                value: (id, entity) => updateButton(id, entity, this.handleOpenUpdate),
+                            },
+                            __delete__: {
+                                header: 'Delete',
+                                value: (id, _entity) => deleteButton(id, this.delete),
+                            },
+                            __add_job__: {
+                                header: 'Add Job',
+                                value: (id, _entity) => this.buttonOpenAddRemoveJob('Add Job', id, 'ADD'),
+                            },
+                            __remove_job__: {
+                                header: 'Remove Job',
+                                value: (id, _entity) => this.buttonOpenAddRemoveJob('Remove Job', id, 'REMOVE'),
+                            },
+                        }}
                         entityProvider={callback => PlansApi.listAll(checkStatusHandler(callback))}
                     />
                 </Box>
                 <EntityDialog
                     ref={this.dlg}
                     profile={this.state.requestProfile}
-                    entityName="Plan"
                     handleCreateUpdate={this.createOrUpdate}
+                />
+                <EntityDialog
+                    ref={this.dlg_job}
+                    profile={this.state.jobIdProfile}
+                    handleCreateUpdate={this.addRemoveJob}
                 />
             </React.Fragment>
         );

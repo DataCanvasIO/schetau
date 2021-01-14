@@ -57,6 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PlanControllerTest {
     private static final String URL_BASE = "/api/plans";
     private static final String URL_WITH_ID = URL_BASE + "/{id}";
+    private static final String URL_WITH_JOBS = URL_BASE + "/{id}/jobs";
 
     @Autowired
     private MockMvc mvc;
@@ -143,6 +144,34 @@ public class PlanControllerTest {
             .andDo(print())
             .andExpect(success());
         verify(planService, times(1)).delete(3L);
+        verifyNoMoreInteractions(planService);
+    }
+
+    @Test
+    public void testAddJob() throws Exception {
+        mvc.perform(
+            put(URL_WITH_JOBS, 1)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"job_id\": 5}")
+        )
+            .andDo(print())
+            .andExpect(success());
+        verify(planService, times(1)).addJob(1L, 5L);
+        verifyNoMoreInteractions(planService);
+    }
+
+    @Test
+    public void testRemoveJob() throws Exception {
+        mvc.perform(
+            delete(URL_WITH_JOBS, 3)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"job_id\": 7}")
+        )
+            .andDo(print())
+            .andExpect(success());
+        verify(planService, times(1)).removeJob(3L, 7L);
         verifyNoMoreInteractions(planService);
     }
 

@@ -25,9 +25,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
 
 import { checkStatusHandler } from "../apis/Api";
 
@@ -38,8 +35,12 @@ interface Entities {
 interface EntityListProps {
     profile: JSONSchema7;
     entityProvider: EntityProvider;
-    handleDelete?: (id: any) => void;
-    handleUpdate?: (id: any, entity: any) => void;
+    additinalColumns?: {
+        [column: string]: {
+            header: string;
+            value: (id: any, entity: any) => any;
+        }
+    }
     valueMappings?: {
         [column: string]: (value: any) => any;
     }
@@ -87,11 +88,9 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
         for (const key in this.props.profile.properties) {
             heads.push(<TableCell key={key}>{key}</TableCell>);
         }
-        if (this.props.handleDelete) {
-            heads.push(<TableCell key="__delete__"></TableCell>);
-        }
-        if (this.props.handleUpdate) {
-            heads.push(<TableCell key="__update__"></TableCell>);
+        for (const key in this.props.additinalColumns) {
+            const props = this.props.additinalColumns[key];
+            heads.push(<TableCell key={key}>{props.header}</TableCell>);
         }
         const rows = [];
         for (const id in this.state.entities) {
@@ -107,30 +106,10 @@ export class EntityList extends React.Component<EntityListProps, EntityListState
                 }
                 cells.push(<TableCell key={key}>{value}</TableCell>);
             }
-            if (this.props.handleDelete) {
-                const handler = this.props.handleDelete;
-                const onClick = () => {
-                    if (confirm('Are you sure to delete item (id = ' + id + ')?')) {
-                        handler(id);
-                    }
-                }
-                cells.push(
-                    <TableCell key="__delete__">
-                        <IconButton onClick={onClick}><DeleteIcon /></IconButton>
-                    </TableCell>
-                );
-            }
-            if (this.props.handleUpdate) {
-                const handler = this.props.handleUpdate;
-                const onClick = () => {
-                    const entity = this.state.entities[id];
-                    handler(id, entity);
-                }
-                cells.push(
-                    <TableCell key="__update__">
-                        <IconButton onClick={onClick}><EditIcon /></IconButton>
-                    </TableCell>
-                );
+            for (const key in this.props.additinalColumns) {
+                const props = this.props.additinalColumns[key];
+                const entity = this.state.entities[id];
+                cells.push(<TableCell key={key}>{props.value(id, entity)}</TableCell>);
             }
             rows.push(<TableRow key={id}>{cells}</TableRow>);
         }

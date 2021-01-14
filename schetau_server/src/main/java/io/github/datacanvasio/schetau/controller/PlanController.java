@@ -18,6 +18,7 @@ package io.github.datacanvasio.schetau.controller;
 
 import io.github.datacanvasio.schetau.controller.mapper.PlanRequestMapper;
 import io.github.datacanvasio.schetau.controller.mapper.PlanResponseMapper;
+import io.github.datacanvasio.schetau.controller.request.JobIdRequest;
 import io.github.datacanvasio.schetau.controller.request.PlanRequest;
 import io.github.datacanvasio.schetau.controller.response.PlanResponse;
 import io.github.datacanvasio.schetau.service.PlanService;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import javax.annotation.Nonnull;
 
 @Tag(name = "Plan APIs")
 @RestController
@@ -69,5 +71,17 @@ public class PlanController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") Long id) {
         planService.delete(id);
+    }
+
+    @Operation(summary = "Add a job to a plan")
+    @PutMapping("/{id}/jobs")
+    public void addJob(@PathVariable("id") Long id, @Nonnull @RequestBody JobIdRequest job) {
+        planService.addJob(id, job.getJobId());
+    }
+
+    @Operation(summary = "Remove a job from a plan")
+    @DeleteMapping("/{id}/jobs")
+    public void removeJob(@PathVariable("id") Long id, @Nonnull @RequestBody JobIdRequest job) {
+        planService.removeJob(id, job.getJobId());
     }
 }
