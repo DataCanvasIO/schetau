@@ -51,7 +51,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class ScheduleIT {
+public class ScheduleTest {
     @Autowired
     private SchetauService schetauService;
     @Autowired
